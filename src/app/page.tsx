@@ -1,3 +1,7 @@
 export default function Home() {
-  return <h2>TEsste ROcketSeat</h2>;
+  return (
+    <div>
+      <h2>Teste Projeto RocketSeat</h2>
+    </div>
+  );
 }
