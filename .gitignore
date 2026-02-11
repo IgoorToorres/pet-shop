@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # database
-/pagedata
+/pgdata
 
 # Generated files 
 src/generated/
