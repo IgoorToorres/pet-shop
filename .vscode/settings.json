@@ -1,7 +1,13 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  }
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
+  "indentRainbow.indicatorStyle": "light",
+  "indentRainbow.lightIndicatorStyleLineWidth": 1,
+  "indentRainbow.colors": [
+    "rgba(34, 197, 94, 0.6)",
+    "rgba(59, 130, 246, 0.6)",
+    "rgba(168, 85, 247, 0.6)",
+    "rgba(234, 179, 8, 0.6)"
+  ]
 }
