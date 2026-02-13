@@ -1,103 +1,12 @@
 import { PeriodSection } from '@/components/period-section';
-import { Appointment as AppointmentPrisma } from '@/generated/prisma';
-import {
-  Appointment,
-  AppointmentPeriod,
-  AppointmentPeriodDay,
-} from '@/types/appointment';
-
-const appointments = [
-  {
-    id: '1',
-    petName: 'Rex',
-    description: 'Consulta',
-    tutorName: 'João',
-    phone: '1234567890',
-    scheduleAt: new Date('2025-08-17T10:00:00'),
-  },
-  {
-    id: '2',
-    petName: 'Mimi',
-    tutorName: 'Maria',
-    description: 'Banho',
-    phone: '1234567890',
-    scheduleAt: new Date('2025-08-17T11:00:00'),
-  },
-  {
-    id: '3',
-    petName: 'Nina',
-    tutorName: 'Natalia',
-    description: 'Consulta',
-    phone: '1234567890',
-    scheduleAt: new Date('2025-08-17T14:00:00'),
-  },
-  {
-    id: '4',
-    petName: 'Nina',
-    tutorName: 'Natalia',
-    description: 'Consulta',
-    phone: '1234567890',
-    scheduleAt: new Date('2025-08-17T19:00:00'),
-  },
-];
-
-const getPeriod = (hour: number): AppointmentPeriodDay => {
-  if (hour >= 9 && hour < 12) return 'morning';
-  if (hour >= 12 && hour < 17) return 'afternoon';
-  return 'evening';
-};
-
-function groupAppointmentByPeriod(
-  appointments: AppointmentPrisma[]
-): AppointmentPeriod[] {
-  const transformedAppointments: Appointment[] = appointments?.map((apt) => ({
-    ...apt,
-    time: apt.scheduleAt.toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-    service: apt.description,
-    period: getPeriod(apt.scheduleAt.getHours()),
-  }));
-
-  const morningAppoitments = transformedAppointments.filter(
-    (apt) => apt.period === 'morning'
-  );
-  const afternoonAppoitments = transformedAppointments.filter(
-    (apt) => apt.period === 'afternoon'
-  );
-  const eveningAppoitments = transformedAppointments.filter(
-    (apt) => apt.period === 'evening'
-  );
-
-  return [
-    {
-      title: 'Manhã',
-      type: 'morning',
-      timeRange: '09h-12h',
-      appointments: morningAppoitments,
-    },
-    {
-      title: 'Tarde',
-      type: 'afternoon',
-      timeRange: '13h-18h',
-      appointments: afternoonAppoitments,
-    },
-    {
-      title: 'noite',
-      type: 'evening',
-      timeRange: '19h-21h',
-      appointments: eveningAppoitments,
-    },
-  ];
-}
+import { APPOINTMENTS_DATA, groupAppointmentByPeriod } from '@/utils';
 
 export default function Home() {
-  const periods = groupAppointmentByPeriod(appointments);
+  const periods = groupAppointmentByPeriod(APPOINTMENTS_DATA);
 
   return (
     <div className="bg-background-primary p-6">
-      <div className="flex items-center justify-between md:m-8">
+      <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-title-size text-content-primary mb-2">
             Sua agenda
