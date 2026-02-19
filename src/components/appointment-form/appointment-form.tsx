@@ -44,6 +44,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import { toast } from 'sonner';
 
 const appointmentFormSchema = z
   .object({
@@ -88,6 +89,14 @@ export const AppointmentForm = () => {
   });
 
   const onSubmit = (data: AppointFormValues) => {
+    const [hour, minute] = data.time.split(':');
+
+    const scheduleAt = new Date(data.scheduleAt);
+    scheduleAt.setHours(Number(hour), Number(minute), 0, 0);
+    toast.success(`Agendamento cirado com sucesso`);
+
+    //TODO: fazer server action
+
     console.log(data);
   };
 
