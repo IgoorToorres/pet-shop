@@ -21,7 +21,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
-import { Dog, MessageSquare, User } from 'lucide-react';
+import { Dog, MessageSquare, Phone, User } from 'lucide-react';
+import { IMaskInput } from 'react-imask';
 
 const appointmentFormSchema = z.object({
   tutorName: z.string().min(3, 'Nome do tutor é obrigatório'),
@@ -70,6 +71,7 @@ export const AppointmentForm = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-3 "
           >
+            {/* input nome do tutor */}
             <FormField
               control={form.control}
               name="tutorName"
@@ -95,6 +97,8 @@ export const AppointmentForm = () => {
                 </FormItem>
               )}
             />
+
+            {/* input nome do pet */}
             <FormField
               control={form.control}
               name="petName"
@@ -121,6 +125,35 @@ export const AppointmentForm = () => {
               )}
             />
 
+            {/* input telefone */}
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-label-medium-size text-content-primary">
+                    Telefone
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Phone
+                        className="absolute left-3 top-1/2 -translate-y-1/2 transform text-content-brand"
+                        size={20}
+                      />
+                      <IMaskInput
+                        className="pl-10 flex h-12 w-full rounded-md border border-border-primary bg-background-tertiary px-3 py-2 text-sm text-content-primary ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-content-secondary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:ring-border-brand disabled:cursor-not-allowed disabled:opacity-50 hover:border-border-secondary focus:border-border-brand focus-visible:border-border-brand aria-invalid:ring-destructive/20 aria-invalid:border-destructive"
+                        placeholder="(00) 00000-0000"
+                        mask="(00) 00000-0000"
+                        {...field}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* input descrição */}
             <FormField
               control={form.control}
               name="description"
