@@ -12,9 +12,9 @@ const appointmentSchema = z.object({
   scheduleAt: z.date(),
 });
 
-type appointmentData = z.infer<typeof appointmentSchema>;
+type AppointmentData = z.infer<typeof appointmentSchema>;
 
-export async function createAppointment(data: appointmentData) {
+export async function createAppointment(data: AppointmentData) {
   try {
     //validando os dados com schema do zod
     const parsedData = appointmentSchema.parse(data);
@@ -56,6 +56,52 @@ export async function createAppointment(data: appointmentData) {
     });
 
     //informando o next para dar refrash na pagina "/" com dados recem cadastrados
+    revalidatePath('/');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateAppointment(id: string, data: AppointmentData) {
+  try {
+    const parsedData = appointmentSchema.parse(data);
+    const hour = data.scheduleAt.getHours();
+
+    const isMorning = hour >= 9 && hour < 12;
+    const isAfternoon = hour >= 13 && hour < 18;
+    const isEvening = hour >= 18 && hour < 21;
+
+    if (!isMorning && !isAfternoon && !isEvening) {
+      return {
+        error:
+          'Agendamento só podem ser feitos entre 9h e 12h, 13h e 18h ou 19h e 21h',
+      };
+    }
+
+    const existingAppointment = await prisma.appointment.findFirst({
+      where: {
+        scheduleAt: parsedData.scheduleAt,
+        id: {
+          not: id,
+        },
+      },
+    });
+
+    if (existingAppointment) {
+      return {
+        error: 'Este horário já está reservado',
+      };
+    }
+
+    await prisma.appointment.update({
+      where: {
+        id,
+      },
+      data: {
+        ...parsedData,
+      },
+    });
+
     revalidatePath('/');
   } catch (error) {
     console.log(error);
