@@ -1,8 +1,13 @@
+'use client';
 import { cn } from '@/lib/utils';
 import { Appointment } from '@/types/appointment';
 import { AppointmentForm } from '../appointment-form';
 import { Button } from '../ui/button';
-import { Pen } from 'lucide-react';
+import { Pen, Trash2 } from 'lucide-react';
+import { AlertDialogDestructive } from '../alert-dialog-destructive';
+import { deleteAppointment } from '@/app/actions';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 type AppointmentCardProsp = {
   appointment: Appointment;
@@ -13,6 +18,20 @@ export const AppointmentCard = ({
   appointment,
   isFirstInSection,
 }: AppointmentCardProsp) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  async function handleDelete(id: string) {
+    setIsDeleting(true);
+    const result = await deleteAppointment(id);
+    if (result?.error) {
+      toast.error(result.error);
+      setIsDeleting(false);
+      return;
+    }
+    toast.success('Agendamento exlcuido com sucesso');
+    setIsDeleting(false);
+  }
+
   return (
     <div
       className={cn(
@@ -51,6 +70,14 @@ export const AppointmentCard = ({
             <Pen size={16} />
           </Button>
         </AppointmentForm>
+        <AlertDialogDestructive
+          handleDelete={() => handleDelete(appointment.id)}
+          isDeleting={isDeleting}
+        >
+          <Button variant={'remove'} size={'icon'}>
+            <Trash2 size={16} />
+          </Button>
+        </AlertDialogDestructive>
       </div>
     </div>
   );
