@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 import z from 'zod';
 
 const appointmentSchema = z.object({
@@ -53,6 +54,9 @@ export async function createAppointment(data: appointmentData) {
         ...parsedData,
       },
     });
+
+    //informando o next para dar refrash na pagina "/" com dados recem cadastrados
+    revalidatePath('/');
   } catch (error) {
     console.log(error);
   }
