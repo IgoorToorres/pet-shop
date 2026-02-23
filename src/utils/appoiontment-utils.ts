@@ -55,3 +55,18 @@ export function groupAppointmentByPeriod(
     },
   ];
 }
+
+export function calculatePeriod(hour: number) {
+  //verificando se é na parte da manha
+  const isMorning = hour >= 9 && hour < 12;
+  //verificando se é na parte da tarde
+  const isAfternoon = hour >= 13 && hour < 18;
+  //verificando se é na parte da noite
+  const isEvening = hour >= 19 && hour < 21;
+
+  return {
+    isMorning,
+    isAfternoon,
+    isEvening,
+  };
+}
